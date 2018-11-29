@@ -16,7 +16,7 @@ If(!$workingDirectory) {
     $workingDirectory = $PSScriptRoot
 }
 
-. .\InstallDependencies.ps1 -installDirectory $workingDirectory
+# . .\InstallDependencies.ps1 -installDirectory $workingDirectory
 
 $ErrorActionPreference = "Continue"
 $testsFailed = $false
@@ -42,14 +42,17 @@ Write-Output "Username: $username"
 
 Write-Output "##### Initializing process #####"
 
-Add-Type -Path $workingDirectory\packages\GOEddie.SQLCover.0.4.1\SQLCover.dll
+# $sqlCoverPath = $workingDirectory\packages\GOEddie.SQLCover.0.4.1\SQLCover.dll
+$sqlCoverPath = "$PSScriptRoot\dependencies\sqlcover\SQLCover.dll"
+Add-Type -Path $sqlCoverPath
+Write-Output "Successfully added SQLCover dependency from $sqlCoverPath"
 
 # $connectionString = "Server=tcp:$server,1433;Initial Catalog=$database;Persist Security Info=False;User ID=$username;Password=$password;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=60;"
 $connectionString = "Server=$server;Database=$database;User Id=$username;Password=$password;"
 
 Write-Output "Running the tSQLt tests and getting Code Coverage..."
 
-$coverage = new-object SQLCover.CodeCoverage($connectionString, $database, $null, $true, $false)
+$coverage = new-object SQLCover.CodeCoverage($connectionString, $database, $null, $true, $false, [SQLCover.Trace.TraceControllerType]::Azure)
 
 $startResult = $coverage.Start()
 
@@ -80,7 +83,9 @@ $coverageResults.SaveSourceFiles($openCoverSourceFolder)
 Write-Output "Successfully saved source code to $openCoverSourceFolder"
 
 Write-Output "Converting OpenCover to Cobertura results..."
-$coberturaConverterToolPath = Join-Path -Path $workingDirectory -ChildPath "packages\OpenCoverToCoberturaConverter.0.3.4\tools\OpenCoverToCoberturaConverter.exe"
+
+# $coberturaConverterToolPath = Join-Path -Path $workingDirectory -ChildPath "packages\OpenCoverToCoberturaConverter.0.3.4\tools\OpenCoverToCoberturaConverter.exe"
+$coberturaConverterToolPath = Join-Path -Path $PSScriptRoot -ChildPath "dependencies\opencovertocoberturaconverter\OpenCoverToCoberturaConverter.exe"
 $coberturaFileName = Join-Path -Path $outputFolder -ChildPath $coberturaFileName
 $argsList = "-input:$openCoverXmlFile -output:$coberturaFileName -sources:$openCoverSourceFolder -includeGettersSetters:true"
 
@@ -88,7 +93,8 @@ Start-Process -FilePath $coberturaConverterToolPath -ArgumentList $argsList -NoN
 Write-Output "Finished converting OpenCover to Cobertura. File available at $coberturaFileName"
 
 Write-Output "Generating Azure Pipelines report from Cobertura results..."
-$reportGeneratorToolPath = Join-Path -Path $workingDirectory -ChildPath "packages\ReportGenerator.4.0.4\tools\net47\ReportGenerator.exe"
+# $reportGeneratorToolPath = Join-Path -Path $workingDirectory -ChildPath "packages\ReportGenerator.4.0.4\tools\net47\ReportGenerator.exe"
+$reportGeneratorToolPath = Join-Path -Path $PSScriptRoot -ChildPath "dependencies\reportgenerator\ReportGenerator.exe"
 $htmlReportsOutput = Join-Path -Path $outputFolder -ChildPath $htmlReportsOutput
 $argsList = "-reports:$coberturaFileName -targetDir:$htmlReportsOutput -reporttype:HtmlInline_AzurePipelines -sourcedirs:$openCoverSourceFolder -assemblyfilters:+* -classfilters:+* -filefilters:+* -verbosity:Verbose"
 
