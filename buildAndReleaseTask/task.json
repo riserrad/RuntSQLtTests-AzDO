@@ -5,71 +5,50 @@
     "description": "Run tSQLt Unit Tests and extract its results and Code Coverage",
     "helpMarkDown": "",
     "categories": [
-        "Azure Pipelines"
+        "Test"
     ],
     "author": "Ricardo Serradas",
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 8
+        "Patch": 24
     },
     "instanceNameFormat": "Run tSQlt Unit Tests on $(database)",
+    "groups": [
+        {
+            "name": "databaseInformation",
+            "displayName": "Database Information",
+            "isExpanded": true
+        },
+        {
+            "name": "testExecution",
+            "displayName": "Test Execution",
+            "isExpanded": true
+        },
+        {
+            "name": "codeCoverage",
+            "displayName": "Code Coverage",
+            "isExpanded": false
+        }
+    ],
     "inputs": [
         {
-            "name": "server",
+            "name": "connectionString",
             "type": "string",
-            "label": "SQL Server and Instance",
+            "label": "SQL Server Connection String",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "The SQL Server host and instance the database was deployed with tSQLt tests"
+            "helpMarkDown": "The SQL Server Connection String to connect to the database",
+            "groupName": "databaseInformation"
         },
         {
-            "name": "database",
+            "name": "queryTimeout",
             "type": "string",
-            "label": "SQL Database",
+            "label": "SQL Connection Timeout",
             "defaultValue": "",
             "required": true,
-            "helpMarkDown": "The deployed SQL Database"
-        },
-        {
-            "name": "username",
-            "type": "string",
-            "label": "SQL UserName",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "The user name with permissions to access the database"
-        },
-        {
-            "name": "password",
-            "type": "string",
-            "label": "SQL Password",
-            "defaultValue": "",
-            "required": true,
-            "helpMarkDown": "The password for the provided user. Tip: use a variable to protect your password!"
-        },
-        {
-            "name": "openCoverSourceFolder",
-            "type": "string",
-            "label": "Folder to store the Open Cover generated source",
-            "defaultValue": "OpenCoverSourceFiles",
-            "required": true,
-            "helpMarkDown": "The folder that Open Cover will use to export the source code to generate the code coverage report"
-        },
-        {
-            "name": "testResultsFileName",
-            "type": "string",
-            "label": "The name for the Test Results XML report",
-            "defaultValue": "TestResults.xml",
-            "required": true,
-            "helpMarkDown": "You're going to need it to use the Publish Test Results task."
-        },
-        {
-            "name": "coberturaFileName",
-            "type": "string",
-            "label": "The name for the Cobertura Code Coverage XML report",
-            "defaultValue": "Cobertura.xml",
-            "required": true,
-            "helpMarkDown": "You're going to need it to use the Publish Test Results task."
+            "helpMarkDown": "The timeout to be used on Connection Strings to SQL Server",
+            "groupName": "databaseInformation"
         },
         {
             "name": "rootOutput",
@@ -77,7 +56,44 @@
             "label": "The root folder to store all the output for this task",
             "defaultValue": "out",
             "required": true,
-            "helpMarkDown": "If you need to manage the results other way than default, feel free to change it."
+            "helpMarkDown": "If you need to manage the results other way than default, feel free to change it.",
+            "groupName": "testExecution"
+        },
+        {
+            "name": "testResultsFileName",
+            "type": "string",
+            "label": "The name for the Test Results XML report",
+            "defaultValue": "TestResults.xml",
+            "required": true,
+            "helpMarkDown": "You're going to need it to use the Publish Test Results task.",
+            "groupName": "testExecution"
+        },
+        {
+            "name": "enableCodeCoverage",
+            "type": "boolean",
+            "label": "Enable Code Coverage",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "If you want Cobertura reports to be generated for the test execution, enable this.",
+            "groupName": "codeCoverage"
+        },
+        {
+            "name": "openCoverSourceFolder",
+            "type": "string",
+            "label": "Folder to store the Open Cover generated source",
+            "defaultValue": "OpenCoverSourceFiles",
+            "required": true,
+            "helpMarkDown": "The folder that Open Cover will use to export the source code to generate the code coverage report",
+            "groupName": "codeCoverage"
+        },
+        {
+            "name": "coberturaFileName",
+            "type": "string",
+            "label": "The name for the Cobertura Code Coverage XML report",
+            "defaultValue": "Cobertura.xml",
+            "required": true,
+            "helpMarkDown": "You're going to need it to use the Publish Test Results task.",
+            "groupName": "codeCoverage"
         },
         {
             "name": "htmlReportsOutput",
@@ -85,7 +101,8 @@
             "label": "HTML reports output",
             "defaultValue": "AzurePipelines",
             "required": true,
-            "helpMarkDown": "The folder to store the report that needs to be published using the Publish Code Coverage results."
+            "helpMarkDown": "The folder to store the report that needs to be published using the Publish Code Coverage results.",
+            "groupName": "codeCoverage"
         },
         {
             "name": "workingDirectory",
@@ -93,12 +110,13 @@
             "label": "Working Directory",
             "defaultValue": "$(Build.SourcesDirectory)",
             "required": true,
-            "helpMarkDown": "The folder have all working files."
+            "helpMarkDown": "The folder have all working files.",
+            "groupName": ""
         }
     ],
     "execution": {
         "PowerShell": {
-            "target": "RunTestsWithOpenCover.ps1"
+            "target": "Run-tSQLtTests.ps1"
         }
     }
 }

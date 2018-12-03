@@ -2,34 +2,37 @@
     "manifestVersion": 1,
     "id": "runtsqltunittests",
     "name": "Run tSQLt Unit Tests",
-    "version": "0.1.8",
+    "version": "0.1.24",
     "publisher": "RicardoSerradasMSFT",
+    "description": "Build task to run tSQLt Unit Tests and publist its results and code coverage.",
     "targets": [
         {
             "id": "Microsoft.VisualStudio.Services"
         }
     ],    
-    "description": "Build task to run tSQLt Unit Tests and publist its results and code coverage.",
     "categories": [
         "Azure Pipelines"
     ],
     "content": {
         "details": {
-            "path": "README.md"
+            "path": "overview.md",
+            "addressable": true
         }
     },
+    "repository": {
+        "type": "git",
+        "uri": "https://github.com/ricardoserradas/RuntSQLtTests-AzDO"
+    },
     "icons": {
-        "default": "images/extension-icon.png"        
+        "default": "images/extension-icon-128x128.png"        
     },
     "files": [
         {
             "path": "buildAndReleaseTask"
         },
         {
-            "path": "README.md"
-        },
-        {
-            "path": "images"
+            "path": "images",
+            "addressable": true
         }
     ],
     "contributions": [
@@ -43,5 +46,8 @@
                 "name": "buildAndReleaseTask"
             }
         }
+    ],
+    "galleryFlags": [
+        "Preview"
     ]
 }
