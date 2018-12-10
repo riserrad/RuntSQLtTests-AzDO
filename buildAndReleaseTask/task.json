@@ -56,7 +56,7 @@
             "label": "The root folder to store all the output for this task",
             "defaultValue": "$(System.DefaultWorkingDirectory)/tSQLt-out",
             "required": true,
-            "helpMarkDown": "If you need to manage the results other way than default, feel free to change it.",
+            "helpMarkDown": "The output from this task will be dropped under `$(System.DefaultWorkingDirectory)/tSQLt-out` unless modified here.",
             "groupName": "testExecution"
         },
         {
