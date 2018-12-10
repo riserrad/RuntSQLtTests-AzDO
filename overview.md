@@ -67,11 +67,11 @@ Here, two required information:
 
 #### Test Execution
 
-You'll have default information filled here. You can also customize it. You'll need these information for publishing your test results to your execution summary.
+You'll have default information filled here that is supposed to make it work by default with the requirements of the **Publish Test Results** task. You can also customize it.
 
-* **The root folder to store all the output for this task**: You must be aware that all the output from this task will be dropped under working directory\**out** (or whatever you configure here).
+* **The root folder to store all the output for this task**: You must be aware that all the output from this task will be dropped under working **$(System.DefaultWorkingDirectory)/tSQLt-out** (or whatever you configure here).
 
-* **The name for the Test Results XML report**: This is the file that the Publish Test Results task will use to publish the results to the summary.
+* **The name for the Test Results XML report**: This is the file that the Publish Test Results task will use to publish the results to the summary. Its default value is already discoverable by the Publish Test Results task's default configuration.
 
 ![Test Execution](images/04-Test-Execution.PNG)
 

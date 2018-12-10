@@ -30,18 +30,28 @@ if(!$workingDirectory) {
 
 $ErrorActionPreference = "Continue"
 
-$outputFolder = Join-Path -Path $workingDirectory -ChildPath $rootOutput
-New-Item -ItemType Directory -Path $outputFolder -Force
-Write-Output "outputFolder set to $outputFolder"
+If([System.IO.Path]::IsPathRooted($rootOutput)){
+    If(!(Test-Path $rootOutput)){
+        New-Item -ItemType Directory -Path $rootOutput -Force
+    }
+}
+Else {
+    $rootOutput = Join-Path -Path $workingDirectory -ChildPath $rootOutput
+    If(!(Test-Path $rootOutput)){
+        New-Item -ItemType Directory -Path $rootOutput -Force
+    }
+}
+
+Write-Output "rootOutput set to $rootOutput"
 
 If([System.IO.Path]::IsPathRooted($testResultsFileName)){
    Write-Output "No need to transform $testResultsFileName" 
 } else {
-    $testResultsFileName = Join-Path -Path $outputFolder -ChildPath $testResultsFileName
+    $testResultsFileName = Join-Path -Path $rootOutput -ChildPath $testResultsFileName
     Write-Output "testResultsFileName set to $testResultsFileName"
 }
 
-$openCoverSourceFolder = Join-Path -Path $outputFolder -ChildPath $openCoverSourceFolder
+$openCoverSourceFolder = Join-Path -Path $rootOutput -ChildPath $openCoverSourceFolder
 Write-Output "openCoverSourceFolder set to $openCoverSourceFolder"
 
 Write-Output "`n##### Initializing process #####`n"
@@ -53,10 +63,10 @@ else {
     $openCoverXmlFile = Join-Path -Path $openCoverSourceFolder -ChildPath "Coverage.opencover.xml"
     Write-Output "openCoverXmlFile set to $openCoverXmlFile"
     
-    $coberturaFileName = Join-Path -Path $outputFolder -ChildPath $coberturaFileName
+    $coberturaFileName = Join-Path -Path $rootOutput -ChildPath $coberturaFileName
     Write-Output "coberturaFilename set to $coberturaFileName"
 
-    $htmlReportsOutput = Join-Path -Path $outputFolder -ChildPath $htmlReportsOutput
+    $htmlReportsOutput = Join-Path -Path $rootOutput -ChildPath $htmlReportsOutput
     Write-Output "htmlReportsOutput set to $htmlReportsOutput"
     
     . .\Invoke-tSQLtTests-WithCodeCoverage.ps1 -connectionString $connectionString -rootOutput $rootOutput -testResultsFileName $testResultsFileName -openCoverSourceFolder $openCoverSourceFolder -openCoverXmlFile $openCoverXmlFile -coberturaFileName $coberturaFileName -htmlReportsOutput $htmlReportsOutput -queryTimeout $queryTimeout

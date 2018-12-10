@@ -3,7 +3,6 @@ param(
     [string]$connectionString,
     
     # Test Result parameters
-    [string]$rootOutput,
     [string]$testResultsFileName,
     [string]$queryTimeout
 )
