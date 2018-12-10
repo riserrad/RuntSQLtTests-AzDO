@@ -11,7 +11,7 @@
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 24
+        "Patch": 26
     },
     "instanceNameFormat": "Run tSQlt Unit Tests on $(database)",
     "groups": [
@@ -63,7 +63,7 @@
             "name": "testResultsFileName",
             "type": "string",
             "label": "The name for the Test Results XML report",
-            "defaultValue": "TestResults.xml",
+            "defaultValue": "TEST-Results.xml",
             "required": true,
             "helpMarkDown": "You're going to need it to use the Publish Test Results task.",
             "groupName": "testExecution"
