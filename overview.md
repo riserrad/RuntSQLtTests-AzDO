@@ -43,6 +43,19 @@ This extension is still in preview to gather information on using, feedback and 
 
 ## How to use it
 
+### TL;DR
+
+If you just want your test (with or without Code Coverage) and you will not customize anything right now, just follow these steps:
+
+* Add the **Run tSQLt Unit Tests** task;
+  * Add your connection string to the *SQL Server Connection String* field;
+  * Check *Control Options/Continue on error*;
+* Add the **Publish Test Results** task;
+* If you're enabling Code Coverage
+  * Add the **Publish Code Coverage Results** task;
+  * Change *Summary file* to `$(System.DefaultWorkingDirectory)/tSQLt-out/Cobertura.xml`;
+  * Change *Report directory* to `$(System.DefaultWorkingDirectory)/tSQLt-out/AzurePipelines`
+
 ### Add the Run tSQLt Unit Tests build task to your pipeline
 
 Search for `tsqlt` and make sure to add the task to your pipeline:
@@ -67,11 +80,11 @@ Here, two required information:
 
 #### Test Execution
 
-You'll have default information filled here. You can also customize it. You'll need these information for publishing your test results to your execution summary.
+You'll have default information filled here that is supposed to make it work by default with the requirements of the **Publish Test Results** task. You can also customize it.
 
-* **The root folder to store all the output for this task**: You must be aware that all the output from this task will be dropped under working directory\**out** (or whatever you configure here).
+* **The root folder to store all the output for this task**: You must be aware that all the output from this task will be dropped under working **$(System.DefaultWorkingDirectory)/tSQLt-out** (or whatever you configure here).
 
-* **The name for the Test Results XML report**: This is the file that the Publish Test Results task will use to publish the results to the summary.
+* **The name for the Test Results XML report**: This is the file that the Publish Test Results task will use to publish the results to the summary. Its default value is already discoverable by the Publish Test Results task's default configuration.
 
 ![Test Execution](images/04-Test-Execution.PNG)
 
@@ -91,7 +104,7 @@ By default, Code Coverage is **disabled**. If you want the task to also generate
 
 If any of your tests fail, the task **will also fail**. Because of that, you *must* mark the *Continue on error* option so your pipeline will publish test results and code coverage reports, if enabled.
 
-<img src="images\06-Control-options.png" alt="Control options" />
+![Control options](images/06-Control-options.png)
  
  ### Add the Publish Test Results to the pipeline
 

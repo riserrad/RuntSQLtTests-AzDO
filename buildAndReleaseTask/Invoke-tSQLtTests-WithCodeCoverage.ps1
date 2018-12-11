@@ -3,7 +3,6 @@ param (
     [string]$connectionString,
 
     # Test Result parameters
-    [string]$rootOutput,
     [string]$testResultsFileName,
 
     # Code Coverage parameters
@@ -35,7 +34,7 @@ if(!$startResult){
     Exit -1
 }
 
-. .\Invoke-tSQLtTests.ps1 -connectionString $connectionString -rootOutput $rootOutput -testResultsFileName $testResultsFileName -queryTimeout $queryTimeout
+. .\Invoke-tSQLtTests.ps1 -connectionString $connectionString -testResultsFileName $testResultsFileName -queryTimeout $queryTimeout
 
 $coverageResults = $coverage.Stop()
 

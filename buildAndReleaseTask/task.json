@@ -3,7 +3,7 @@
     "name": "runtsqltunittests",
     "friendlyName": "Run tSQLt Unit Tests",
     "description": "Run tSQLt Unit Tests and extract its results and Code Coverage",
-    "helpMarkDown": "",
+    "helpMarkDown": "[More information](https://github.com/ricardoserradas/RuntSQLtTests-AzDO)",
     "categories": [
         "Test"
     ],
@@ -11,9 +11,9 @@
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 24
+        "Patch": 30
     },
-    "instanceNameFormat": "Run tSQlt Unit Tests on $(database)",
+    "instanceNameFormat": "Run tSQlt Unit Tests",
     "groups": [
         {
             "name": "databaseInformation",
@@ -45,7 +45,7 @@
             "name": "queryTimeout",
             "type": "string",
             "label": "SQL Connection Timeout",
-            "defaultValue": "",
+            "defaultValue": "60",
             "required": true,
             "helpMarkDown": "The timeout to be used on Connection Strings to SQL Server",
             "groupName": "databaseInformation"
@@ -54,16 +54,16 @@
             "name": "rootOutput",
             "type": "string",
             "label": "The root folder to store all the output for this task",
-            "defaultValue": "out",
+            "defaultValue": "$(System.DefaultWorkingDirectory)/tSQLt-out",
             "required": true,
-            "helpMarkDown": "If you need to manage the results other way than default, feel free to change it.",
+            "helpMarkDown": "The output from this task will be dropped under `$(System.DefaultWorkingDirectory)/tSQLt-out` unless modified here.",
             "groupName": "testExecution"
         },
         {
             "name": "testResultsFileName",
             "type": "string",
             "label": "The name for the Test Results XML report",
-            "defaultValue": "TestResults.xml",
+            "defaultValue": "TEST-Results.xml",
             "required": true,
             "helpMarkDown": "You're going to need it to use the Publish Test Results task.",
             "groupName": "testExecution"
@@ -75,15 +75,6 @@
             "defaultValue": "false",
             "required": false,
             "helpMarkDown": "If you want Cobertura reports to be generated for the test execution, enable this.",
-            "groupName": "codeCoverage"
-        },
-        {
-            "name": "openCoverSourceFolder",
-            "type": "string",
-            "label": "Folder to store the Open Cover generated source",
-            "defaultValue": "OpenCoverSourceFiles",
-            "required": true,
-            "helpMarkDown": "The folder that Open Cover will use to export the source code to generate the code coverage report",
             "groupName": "codeCoverage"
         },
         {
@@ -108,9 +99,9 @@
             "name": "workingDirectory",
             "type": "string",
             "label": "Working Directory",
-            "defaultValue": "$(Build.SourcesDirectory)",
+            "defaultValue": "$(System.DefaultWorkingDirectory)",
             "required": true,
-            "helpMarkDown": "The folder have all working files.",
+            "helpMarkDown": "The folder to have all working files.",
             "groupName": ""
         }
     ],
