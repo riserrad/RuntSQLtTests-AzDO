@@ -11,7 +11,7 @@
     "version": {
         "Major": 0,
         "Minor": 1,
-        "Patch": 29
+        "Patch": 30
     },
     "instanceNameFormat": "Run tSQlt Unit Tests",
     "groups": [
@@ -75,15 +75,6 @@
             "defaultValue": "false",
             "required": false,
             "helpMarkDown": "If you want Cobertura reports to be generated for the test execution, enable this.",
-            "groupName": "codeCoverage"
-        },
-        {
-            "name": "openCoverSourceFolder",
-            "type": "string",
-            "label": "Folder to store the Open Cover generated source",
-            "defaultValue": "OpenCoverSourceFiles",
-            "required": true,
-            "helpMarkDown": "The folder that Open Cover will use to export the source code to generate the code coverage report",
             "groupName": "codeCoverage"
         },
         {

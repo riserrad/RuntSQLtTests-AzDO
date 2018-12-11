@@ -2,7 +2,7 @@
     "manifestVersion": 1,
     "id": "runtsqltunittests",
     "name": "Run tSQLt Unit Tests",
-    "version": "0.1.29",
+    "version": "0.1.30",
     "publisher": "RicardoSerradasMSFT",
     "description": "Build task to run tSQLt Unit Tests and publist its results and code coverage.",
     "targets": [
