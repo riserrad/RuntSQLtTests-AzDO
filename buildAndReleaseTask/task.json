@@ -77,6 +77,15 @@
             "helpMarkDown": "If you want Cobertura reports to be generated for the test execution, enable this.",
             "groupName": "codeCoverage"
         },
+		{
+            "name": "enableAzure",
+            "type": "boolean",
+            "label": "Enable Azure SQL",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "If you want to get the result from a Azure SQL Server, enable this.",
+            "groupName": "codeCoverage"
+        },
         {
             "name": "coberturaFileName",
             "type": "string",
