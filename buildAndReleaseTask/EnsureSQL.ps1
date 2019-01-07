@@ -43,3 +43,4 @@ else
 		Write-Host "SQLPS module is loaded"
 	}
 }
+}

@@ -27,6 +27,8 @@ if(!$workingDirectory) {
 # Dependencies are then embeded to the extension VSIX
 # . .\InstallDependencies.ps1 -installDirectory $workingDirectory
 
+. .\EnsureSQL.ps1
+
 . .\Install-Dependencies.ps1
 
 $ErrorActionPreference = "Continue"
