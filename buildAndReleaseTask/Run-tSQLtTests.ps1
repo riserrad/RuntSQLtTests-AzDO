@@ -11,6 +11,7 @@ param (
     
     # Code Coverage parameters
     [string]$enableCodeCoverage = "false",
+	[string]$enableAzure = "false",
     [string]$openCoverSourceFolder = "OpenCoverSourceFiles",
     [string]$coberturaFileName = "Cobertura.xml",
     [string]$htmlReportsOutput = "AzurePipelines",
@@ -25,6 +26,8 @@ if(!$workingDirectory) {
 # Not in use yet due to issue on SQLCover (https://github.com/GoEddie/SQLCover/issues/32) and intermitent issue to download ReportGenerator
 # Dependencies are then embeded to the extension VSIX
 # . .\InstallDependencies.ps1 -installDirectory $workingDirectory
+
+. .\EnsureSQL.ps1
 
 . .\Install-Dependencies.ps1
 
@@ -69,5 +72,5 @@ else {
     $htmlReportsOutput = Join-Path -Path $rootOutput -ChildPath $htmlReportsOutput
     Write-Output "htmlReportsOutput set to $htmlReportsOutput"
     
-    . .\Invoke-tSQLtTests-WithCodeCoverage.ps1 -connectionString $connectionString -rootOutput $rootOutput -testResultsFileName $testResultsFileName -openCoverSourceFolder $openCoverSourceFolder -openCoverXmlFile $openCoverXmlFile -coberturaFileName $coberturaFileName -htmlReportsOutput $htmlReportsOutput -queryTimeout $queryTimeout
+    . .\Invoke-tSQLtTests-WithCodeCoverage.ps1 -connectionString $connectionString -rootOutput $rootOutput -testResultsFileName $testResultsFileName -openCoverSourceFolder $openCoverSourceFolder -openCoverXmlFile $openCoverXmlFile -coberturaFileName $coberturaFileName -htmlReportsOutput $htmlReportsOutput -queryTimeout $queryTimeout -enableAzure $enableAzure
 }

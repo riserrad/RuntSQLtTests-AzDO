@@ -11,6 +11,7 @@ param (
     [string]$coberturaFileName,
     [string]$htmlReportsOutput,
     [string]$queryTimeout
+	[string]$enableAzure  
 )
 
 $sqlCoverPath = "$PSScriptRoot\dependencies\sqlcover\SQLCover.dll"
@@ -25,7 +26,16 @@ $connectionStringBuilder.set_ConnectionString($connectionString)
 $database = $connectionStringBuilder["initial catalog"]
 Write-Output "Database set to $database"
 
-$coverage = new-object SQLCover.CodeCoverage($connectionString, $database, $null, $true, $false, [SQLCover.Trace.TraceControllerType]::Azure)
+#to be able to work with Azure and SQL -- Glomaga
+Write-Output "EnableAzure set to $enableAzure"
+
+if ($enableAzure -eq "true") {
+Write-Output "SQLCover with Azure SQL"
+	$coverage = new-object SQLCover.CodeCoverage($connectionString, $database, $null, $true, $false, [SQLCover.Trace.TraceControllerType]::Azure)
+}Else{
+Write-Output "SQLCover with SQL"
+	$coverage = new-object SQLCover.CodeCoverage($connectionString, $database, $null, $true, $false, [SQLCover.Trace.TraceControllerType]::sql)
+}
 
 $startResult = $coverage.Start()
 
