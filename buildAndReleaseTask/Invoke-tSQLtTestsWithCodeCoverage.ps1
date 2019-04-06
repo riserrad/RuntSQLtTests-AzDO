@@ -1,6 +1,7 @@
 param (
     # Database info parameters    
     [string]$connectionString,
+    [string]$testOrClassName = "",
 
     # Test Result parameters
     [string]$testResultsFileName,
@@ -34,7 +35,10 @@ if(!$startResult){
     Exit -1
 }
 
-. .\Invoke-tSQLtTests.ps1 -connectionString $connectionString -testResultsFileName $testResultsFileName -queryTimeout $queryTimeout
+. .\Invoke-tSQLtTests.ps1 -connectionString $connectionString `
+    -testResultsFileName $testResultsFileName `
+    -queryTimeout $queryTimeout
+    -testOrClassName $testOrClassName
 
 $coverageResults = $coverage.Stop()
 

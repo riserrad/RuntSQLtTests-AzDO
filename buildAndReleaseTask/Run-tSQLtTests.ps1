@@ -4,6 +4,10 @@ param (
     [string]$connectionString,
     [Parameter(Mandatory=$true)]
     [string]$queryTimeout = "60",
+
+    # Test execution parameters
+    [string]$runAllTests = "true",
+    [string]$testOrClassName = "",
     
     # Test Result parameters
     [string]$rootOutput = "out",
@@ -56,10 +60,61 @@ Write-Output "openCoverSourceFolder set to $openCoverSourceFolder"
 
 Write-Output "`n##### Initializing process #####`n"
 
-if ($enableCodeCoverage -eq "false") {
-    . .\Invoke-tSQLtTests.ps1 -connectionString $connectionString -rootOutput $rootOutput -testResultsFileName $testResultsFileName -queryTimeout $queryTimeout
+function Invoke-TestExecution {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$runAllTests,
+        [Parameter(Mandatory=$true)]
+        [string]$testOrClassName,
+        [Parameter(Mandatory=$true)]
+        [string]$connectionString,
+        [Parameter(Mandatory=$true)]
+        [string]$rootOutput,
+        [Parameter(Mandatory=$true)]
+        [string]$testResultsFileName,
+        [Parameter(Mandatory=$true)]
+        [string]$queryTimeout
+    )
+    
+    if($runAllTests -eq "true" -Or $testOrClassName -eq "") {
+        Write-Output "Running all tests because either runAllTests is set to true or testOrClassName is empty"
+        
+        . .\Invoke-tSQLtTests.ps1 -connectionString $connectionString `
+        -rootOutput $rootOutput `
+        -testResultsFileName $testResultsFileName `
+        -queryTimeout $queryTimeout
+    }
+    else {
+        . .\Invoke-tSQLtTests.ps1 -connectionString $connectionString `
+        -testOrClassName $testOrClassName `
+        -rootOutput $rootOutput `
+        -testResultsFileName $testResultsFileName `
+        -queryTimeout $queryTimeout
+    }
 }
-else {
+
+function Invoke-TestExecutionWithCodeCoverage {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$runAllTests,
+        [Parameter(Mandatory=$true)]
+        [string]$testOrClassName,
+        [Parameter(Mandatory=$true)]
+        [string]$connectionString,
+        [Parameter(Mandatory=$true)]
+        [string]$rootOutput,
+        [Parameter(Mandatory=$true)]
+        [string]$testResultsFileName,
+        [Parameter(Mandatory=$true)]
+        [string]$queryTimeout,
+        [Parameter(Mandatory=$true)]
+        [string]$openCoverSourceFolder,
+        [Parameter(Mandatory=$true)]
+        [string]$coberturaFileName,
+        [Parameter(Mandatory=$true)]
+        [string]$htmlReportsOutput
+    )
+
     $openCoverXmlFile = Join-Path -Path $openCoverSourceFolder -ChildPath "Coverage.opencover.xml"
     Write-Output "openCoverXmlFile set to $openCoverXmlFile"
     
@@ -69,5 +124,47 @@ else {
     $htmlReportsOutput = Join-Path -Path $rootOutput -ChildPath $htmlReportsOutput
     Write-Output "htmlReportsOutput set to $htmlReportsOutput"
     
-    . .\Invoke-tSQLtTests-WithCodeCoverage.ps1 -connectionString $connectionString -rootOutput $rootOutput -testResultsFileName $testResultsFileName -openCoverSourceFolder $openCoverSourceFolder -openCoverXmlFile $openCoverXmlFile -coberturaFileName $coberturaFileName -htmlReportsOutput $htmlReportsOutput -queryTimeout $queryTimeout
+    if($runAllTests -eq "true" -Or $testOrClassName -eq "") {
+        Write-Output "Running all tests because either runAllTests is set to true or testOrClassName is empty"
+        
+        . .\Invoke-tSQLtTestsWithCodeCoverage.ps1 -connectionString $connectionString `
+        -rootOutput $rootOutput `
+        -testResultsFileName $testResultsFileName `
+        -queryTimeout $queryTimeout `
+        -openCoverSourceFolder $openCoverSourceFolder `
+        -openCoverXmlFile $openCoverXmlFile `
+        -coberturaFileName $coberturaFileName `
+        -htmlReportsOutput $htmlReportsOutput `
+    }
+    else {
+        . .\Invoke-tSQLtTestsWithCodeCoverage.ps1 -connectionString $connectionString `
+        -rootOutput $rootOutput `
+        -testOrClassName $testOrClassName `
+        -testResultsFileName $testResultsFileName `
+        -queryTimeout $queryTimeout `
+        -openCoverSourceFolder $openCoverSourceFolder `
+        -openCoverXmlFile $openCoverXmlFile `
+        -coberturaFileName $coberturaFileName `
+        -htmlReportsOutput $htmlReportsOutput `
+    }
+}
+
+if ($enableCodeCoverage -eq "false") {
+    Invoke-TestExecution -runAllTests $runAllTests `
+    -testOrClassName $testOrClassName `
+    -connectionString $connectionString `
+    -rootOutput $rootOutput `
+    -testResultsFileName $testResultsFileName `
+    -queryTimeout $queryTimeout
+}
+else {
+    Invoke-TestExecutionWithCodeCoverage -runAllTests $runAllTests `
+    -testOrClassName $testOrClassName `
+    -connectionString $connectionString `
+    -rootOutput $rootOutput `
+    -testResultsFileName $testResultsFileName `
+    -queryTimeout $queryTimeout `
+    -openCoverSourceFolder $openCoverSourceFolder `
+    -coberturaFileName $coberturaFileName `
+    -htmlReportsOutput $htmlReportsOutput
 }
