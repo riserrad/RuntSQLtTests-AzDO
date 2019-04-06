@@ -10,8 +10,8 @@
     "author": "Ricardo Serradas",
     "version": {
         "Major": 0,
-        "Minor": 1,
-        "Patch": 30
+        "Minor": 2,
+        "Patch": 0
     },
     "instanceNameFormat": "Run tSQlt Unit Tests",
     "groups": [
@@ -49,6 +49,24 @@
             "required": true,
             "helpMarkDown": "The timeout to be used on Connection Strings to SQL Server",
             "groupName": "databaseInformation"
+        },
+        {
+            "name": "runAllTests",
+            "type": "boolean",
+            "label": "Check if you want to run all test suites and test cases",
+            "defaultValue": "true",
+            "required": false,
+            "helpMarkDown": "If you want to run specific tests, uncheck this option and provide further information on the fields below.",
+            "groupName": "testExecution"
+        },
+        {
+            "name": "testOrClassName",
+            "type": "string",
+            "label": "The name of the test class or test case you want to run",
+            "defaultValue": "[MyTestClass].[Test if something is true]",
+            "required": true,
+            "helpMarkDown": "If you're providing a test name, it **must** be preceeded the test class name. E.g., [MyTestClass].[Test if something is true]",
+            "groupName": "testExecution"
         },
         {
             "name": "rootOutput",
