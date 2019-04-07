@@ -37,7 +37,7 @@ if(!$startResult){
 
 . .\Invoke-tSQLtTests.ps1 -connectionString $connectionString `
     -testResultsFileName $testResultsFileName `
-    -queryTimeout $queryTimeout
+    -queryTimeout $queryTimeout `
     -testOrClassName $testOrClassName
 
 $coverageResults = $coverage.Stop()
