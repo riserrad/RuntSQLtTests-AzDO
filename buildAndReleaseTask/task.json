@@ -10,8 +10,8 @@
     "author": "Ricardo Serradas",
     "version": {
         "Major": 0,
-        "Minor": 1,
-        "Patch": 30
+        "Minor": 2,
+        "Patch": 3
     },
     "instanceNameFormat": "Run tSQlt Unit Tests",
     "groups": [
@@ -28,7 +28,7 @@
         {
             "name": "codeCoverage",
             "displayName": "Code Coverage",
-            "isExpanded": false
+            "isExpanded": true
         }
     ],
     "inputs": [
@@ -49,6 +49,25 @@
             "required": true,
             "helpMarkDown": "The timeout to be used on Connection Strings to SQL Server",
             "groupName": "databaseInformation"
+        },
+        {
+            "name": "runAllTests",
+            "type": "boolean",
+            "label": "Run all test suites and test cases",
+            "defaultValue": true,
+            "required": false,
+            "helpMarkDown": "If you want to run specific tests, uncheck this option and provide further information on the fields below.",
+            "groupName": "testExecution"
+        },
+        {
+            "name": "testOrClassName",
+            "type": "string",
+            "label": "The name of the Test Class or Test Case you want to run",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "If you're providing a test case, it **must** be preceeded by the Test Class name. E.g., [MyTestClass].[Test if something is true]",
+            "groupName": "testExecution",
+            "visibleRule": "runAllTests = false"
         },
         {
             "name": "rootOutput",
@@ -72,7 +91,7 @@
             "name": "enableCodeCoverage",
             "type": "boolean",
             "label": "Enable Code Coverage",
-            "defaultValue": "false",
+            "defaultValue": false,
             "required": false,
             "helpMarkDown": "If you want Cobertura reports to be generated for the test execution, enable this.",
             "groupName": "codeCoverage"
@@ -84,7 +103,8 @@
             "defaultValue": "Cobertura.xml",
             "required": true,
             "helpMarkDown": "You're going to need it to use the Publish Test Results task.",
-            "groupName": "codeCoverage"
+            "groupName": "codeCoverage",
+            "visibleRule": "enableCodeCoverage = true"
         },
         {
             "name": "htmlReportsOutput",
@@ -93,7 +113,8 @@
             "defaultValue": "AzurePipelines",
             "required": true,
             "helpMarkDown": "The folder to store the report that needs to be published using the Publish Code Coverage results.",
-            "groupName": "codeCoverage"
+            "groupName": "codeCoverage",
+            "visibleRule": "enableCodeCoverage = true"
         },
         {
             "name": "workingDirectory",
