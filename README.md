@@ -2,8 +2,9 @@
 
 ## What's new
 
-### Version 0.2.1
-
+- Fix for the issues [#13](https://github.com/ricardoserradas/RuntSQLtTests-AzDO/issues/13)
+- Fix for the issues [#11](https://github.com/ricardoserradas/RuntSQLtTests-AzDO/issues/11)
+and [#12](https://github.com/ricardoserradas/RuntSQLtTests-AzDO/issues/12)
 - Added the option to run only a Test Class or Test Case ([Issue #6](https://github.com/ricardoserradas/RuntSQLtTests-AzDO/issues/6))
 - Minor improvements on the task UI
 
