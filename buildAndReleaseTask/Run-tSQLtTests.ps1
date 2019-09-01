@@ -65,6 +65,7 @@ function Invoke-TestExecution {
         [Parameter(Mandatory=$true)]
         [string]$runAllTests,
         [Parameter(Mandatory=$true)]
+        [AllowEmptyString()]
         [string]$testOrClassName,
         [Parameter(Mandatory=$true)]
         [string]$connectionString,
@@ -98,6 +99,7 @@ function Invoke-TestExecutionWithCodeCoverage {
         [Parameter(Mandatory=$true)]
         [string]$runAllTests,
         [Parameter(Mandatory=$true)]
+        [AllowEmptyString()]
         [string]$testOrClassName,
         [Parameter(Mandatory=$true)]
         [string]$connectionString,
