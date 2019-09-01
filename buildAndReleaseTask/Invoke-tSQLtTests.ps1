@@ -23,5 +23,5 @@ else {
     Write-Output "Tests ran successfully. Saving test results to $testResultsFileName"
 }
 
-Invoke-SqlCmd -ConnectionString $connectionString -QueryTimeout $queryTimeout -InputFile ".\GetTestResults.sql" | Select-Object -ExpandProperty XML* | Out-File -FilePath $testResultsFileName
+Invoke-SqlCmd -ConnectionString $connectionString -QueryTimeout $queryTimeout -InputFile ".\GetTestResults.sql" | Select-Object -ExpandProperty XML* | Out-File -FilePath $testResultsFileName -NoNewLine
 Write-Output "Finished gathering test results and writing it to $testResultsFileName"
